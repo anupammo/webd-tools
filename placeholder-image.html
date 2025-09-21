@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placeholder Image Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        header {
+            background: #4a6fa5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .app-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 25px;
+        }
+        
+        .controls {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+        
+        .preview {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #4a6fa5;
+            outline: none;
+        }
+        
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #3a5a80;
+        }
+        
+        .download-btn {
+            background-color: #38a169;
+            margin-top: 10px;
+        }
+        
+        .download-btn:hover {
+            background-color: #2d8656;
+        }
+        
+        .image-container {
+            width: 100%;
+            height: 250px;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            background-color: #f8f9fa;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .image-info {
+            text-align: center;
+            margin-top: 10px;
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .preset-btn {
+            padding: 8px;
+            font-size: 14px;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .preset-btn:hover {
+            background-color: #cbd5e0;
+        }
+        
+        @media (max-width: 768px) {
+            .app-content {
+                flex-direction: column;
+            }
+            
+            .controls, .preview {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Placeholder Image Generator</h1>
+            <p class="subtitle">Create custom placeholder images in seconds</p>
+        </header>
+        
+        <div class="app-content">
+            <div class="controls">
+                <div class="form-group">
+                    <label for="width">Width (px)</label>
+                    <input type="number" id="width" min="1" max="5000" value="400">
+                </div>
+                
+                <div class="form-group">
+                    <label for="height">Height (px)</label>
+                    <input type="number" id="height" min="1" max="5000" value="300">
+                </div>
+                
+                <div class="form-group">
+                    <label for="format">Download Format</label>
+                    <select id="format">
+                        <option value="png">PNG</option>
+                        <option value="jpeg">JPEG</option>
+                        <option value="webp">WebP</option>
+                    </select>
+                </div>
+                
+                <button id="generate-btn">Generate Image</button>
+                <button id="download-btn" class="download-btn">Download Image</button>
+                
+                <div class="form-group">
+                    <label>Quick Presets</label>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-width="800" data-height="600">Blog Post</button>
+                        <button class="preset-btn" data-width="1920" data-height="1080">Hero Banner</button>
+                        <button class="preset-btn" data-width="150" data-height="150">Thumbnail</button>
+                        <button class="preset-btn" data-width="1280" data-height="720">HD Video</button>
+                        <button class="preset-btn" data-width="400" data-height="400">Square</button>
+                        <button class="preset-btn" data-width="300" data-height="600">Mobile</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview">
+                <div class="image-container">
+                    <img id="preview-image" src="" alt="Placeholder preview">
+                </div>
+                <p class="image-info" id="image-info">Enter dimensions and generate your image</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const widthInput = document.getElementById('width');
+            const heightInput = document.getElementById('height');
+            const formatSelect = document.getElementById('format');
+            const generateBtn = document.getElementById('generate-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const previewImage = document.getElementById('preview-image');
+            const imageInfo = document.getElementById('image-info');
+            const presetButtons = document.querySelectorAll('.preset-btn');
+            
+            // Generate initial preview
+            generateImage();
+            
+            // Generate image function
+            function generateImage() {
+                const width = widthInput.value;
+                const height = heightInput.value;
+                
+                if (width < 1 || height < 1) {
+                    alert('Please enter valid dimensions (minimum 1px)');
+                    return;
+                }
+                
+                if (width > 5000 || height > 5000) {
+                    alert('Maximum dimension allowed is 5000px');
+                    return;
+                }
+                
+                // Create a canvas to generate the image
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                
+                // Fill background
+                ctx.fillStyle = '#ddd';
+                ctx.fillRect(0, 0, width, height);
+                
+                // Add text
+                ctx.fillStyle = '#555';
+                ctx.font = `${Math.min(width / 20, height / 5)}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`${width} × ${height}`, width / 2, height / 2);
+                
+                // Add corner markers
+                const markerSize = Math.min(width, height) / 20;
+                ctx.fillStyle = '#999';
+                
+                // Top-left
+                ctx.fillRect(0, 0, markerSize, 2);
+                ctx.fillRect(0, 0, 2, markerSize);
+                
+                // Top-right
+                ctx.fillRect(width - markerSize, 0, markerSize, 2);
+                ctx.fillRect(width - 2, 0, 2, markerSize);
+                
+                // Bottom-left
+                ctx.fillRect(0, height - 2, markerSize, 2);
+                ctx.fillRect(0, height - markerSize, 2, markerSize);
+                
+                // Bottom-right
+                ctx.fillRect(width - markerSize, height - 2, markerSize, 2);
+                ctx.fillRect(width - 2, height - markerSize, 2, markerSize);
+                
+                // Convert to data URL and set as image source
+                previewImage.src = canvas.toDataURL('image/png');
+                imageInfo.textContent = `Current: ${width} × ${height}px`;
+            }
+            
+            // Download image function
+            function downloadImage() {
+                const width = widthInput.value;
+                const height = heightInput.value;
+                const format = formatSelect.value;
+                
+                if (width < 1 || height < 1) {
+                    alert('Please enter valid dimensions (minimum 1px)');
+                    return;
+                }
+                
+                // Create a canvas to generate the image
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                
+                // Fill background
+                ctx.fillStyle = '#ddd';
+                ctx.fillRect(0, 0, width, height);
+                
+                // Add text
+                ctx.fillStyle = '#555';
+                ctx.font = `${Math.min(width / 20, height / 5)}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`${width} × ${height}`, width / 2, height / 2);
+                
+                // Add corner markers
+                const markerSize = Math.min(width, height) / 20;
+                ctx.fillStyle = '#999';
+                
+                // Top-left
+                ctx.fillRect(0, 0, markerSize, 2);
+                ctx.fillRect(0, 0, 2, markerSize);
+                
+                // Top-right
+                ctx.fillRect(width - markerSize, 0, markerSize, 2);
+                ctx.fillRect(width - 2, 0, 2, markerSize);
+                
+                // Bottom-left
+                ctx.fillRect(0, height - 2, markerSize, 2);
+                ctx.fillRect(0, height - markerSize, 2, markerSize);
+                
+                // Bottom-right
+                ctx.fillRect(width - markerSize, height - 2, markerSize, 2);
+                ctx.fillRect(width - 2, height - markerSize, 2, markerSize);
+                
+                // Convert to data URL and trigger download
+                const dataURL = canvas.toDataURL(`image/${format}`);
+                const link = document.createElement('a');
+                link.download = `placeholder-${width}x${height}.${format}`;
+                link.href = dataURL;
+                link.click();
+            }
+            
+            // Event listeners
+            generateBtn.addEventListener('click', generateImage);
+            downloadBtn.addEventListener('click', downloadImage);
+            
+            // Preset buttons
+            presetButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    widthInput.value = this.dataset.width;
+                    heightInput.value = this.dataset.height;
+                    generateImage();
+                });
+            });
+            
+            // Input validation
+            widthInput.addEventListener('change', function() {
+                if (this.value < 1) this.value = 1;
+                if (this.value > 5000) this.value = 5000;
+                generateImage();
+            });
+            
+            heightInput.addEventListener('change', function() {
+                if (this.value < 1) this.value = 1;
+                if (this.value > 5000) this.value = 5000;
+                generateImage();
+            });
+        });
+    </script>
+</body>
+</html>
