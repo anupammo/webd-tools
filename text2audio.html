@@ -10,14 +10,14 @@
   </style>
 </head>
 <body>
-  <h2>🔊 Bengali Text to Audio Downloader</h2>
-  <p>Paste your Bengali text below and click "Download Audio".</p>
+  <h2>🔊 Bengali Text to Audio</h2>
+  <p>Paste your Bengali text below and click "Play Audio".</p>
   <textarea id="bengaliText" placeholder="এখানে বাংলা টেক্সট লিখুন..."></textarea>
   <br>
-  <button onclick="downloadAudio()">Download Audio</button>
+  <button onclick="playAudio()">Play Audio</button>
 
   <script>
-    function downloadAudio() {
+    function playAudio() {
       const text = document.getElementById('bengaliText').value.trim();
       if (!text) {
         alert("দয়া করে কিছু বাংলা টেক্সট লিখুন!");
@@ -27,12 +27,7 @@
       const lang = "bn";
       const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${lang}&client=tw-ob`;
 
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "bengali_audio.mp3";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      window.open(url, '_blank');
     }
   </script>
 </body>
