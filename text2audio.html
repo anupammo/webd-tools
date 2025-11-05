@@ -7,17 +7,19 @@
     body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
     textarea { width: 100%; height: 150px; font-size: 16px; }
     button { padding: 10px 20px; font-size: 16px; margin-top: 10px; }
+    audio { margin-top: 20px; width: 100%; }
   </style>
 </head>
 <body>
   <h2>🔊 Bengali Text to Audio</h2>
-  <p>Paste your Bengali text below and click "Play Audio".</p>
+  <p>Paste your Bengali text below and click "Generate Audio".</p>
   <textarea id="bengaliText" placeholder="এখানে বাংলা টেক্সট লিখুন..."></textarea>
   <br>
-  <button onclick="playAudio()">Play Audio</button>
+  <button onclick="generateAudio()">Generate Audio</button>
+  <audio id="audioPlayer" controls></audio>
 
   <script>
-    function playAudio() {
+    function generateAudio() {
       const text = document.getElementById('bengaliText').value.trim();
       if (!text) {
         alert("দয়া করে কিছু বাংলা টেক্সট লিখুন!");
@@ -27,7 +29,10 @@
       const lang = "bn";
       const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${lang}&client=tw-ob`;
 
-      window.open(url, '_blank');
+      const audio = document.getElementById("audioPlayer");
+      audio.src = url;
+      audio.load();
+      audio.play();
     }
   </script>
 </body>
